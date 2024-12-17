@@ -1,4 +1,4 @@
-package com.talaniacodes.mealprepcalendar.ui.theme
+package com.talaniacodes.mealprepcalendar.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
