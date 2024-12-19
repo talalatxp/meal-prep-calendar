@@ -6,9 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.talaniacodes.mealprepcalendar.common.Constants
-import com.talaniacodes.mealprepcalendar.common.Resource
 import com.talaniacodes.mealprepcalendar.domain.use_case.get_spending.GetSpendingUseCase
-import com.talaniacodes.mealprepcalendar.presentation.spending_list.SpendingListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -1,44 +1,45 @@
 package com.talaniacodes.mealprepcalendar.presentation.spending_list
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.talaniacodes.mealprepcalendar.common.Resource
-import com.talaniacodes.mealprepcalendar.domain.use_case.get_spendings.GetSpendingsUseCase
+import com.talaniacodes.mealprepcalendar.domain.use_case.get_spendings.GetSpendingsUseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SpendingListViewModel @Inject constructor(
-    private val getSpendingsUseCase: GetSpendingsUseCase
+    private val getSpendingsUseCase: GetSpendingsUseCaseImpl
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(SpendingListState())
-    val state: State<SpendingListState> = _state
+    var state by mutableStateOf(SpendingListState())
 
     init {
         getSpendings()
     }
 
-    private fun getSpendings() {
-        getSpendingsUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = SpendingListState(spendings = result.data ?: emptyList())
-                }
+    fun onEvent(event: SpendingListEvent) {
+        when (event) {
+            is SpendingListEvent.OnSearchQueryChange -> onSearchQueryChangeEvent()
+        }
+    }
 
-                is Resource.Error -> {
-                    _state.value =
-                        SpendingListState(error = result.message ?: "An unexpected error occurred")
-                }
+    private fun onSearchQueryChangeEvent() {
 
-                is Resource.Loading -> {
-                    _state.value = SpendingListState(isLoading = true)
-                }
+    }
+
+    private fun getSpendings(
+        query: String = state.searchQuery.lowercase()
+    ) {
+        viewModelScope.launch {
+            getSpendingsUseCase(query).collect { result ->
+                state = state.copy(spendings = result)
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }

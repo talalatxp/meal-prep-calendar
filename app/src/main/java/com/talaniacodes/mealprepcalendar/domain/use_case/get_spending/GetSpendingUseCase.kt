@@ -1,6 +1,5 @@
 package com.talaniacodes.mealprepcalendar.domain.use_case.get_spending
 
-import com.talaniacodes.mealprepcalendar.common.Resource
 import com.talaniacodes.mealprepcalendar.data.remote.dto.toModel
 import com.talaniacodes.mealprepcalendar.domain.model.SpendingModel
 import com.talaniacodes.mealprepcalendar.domain.repository.SpendingRepository

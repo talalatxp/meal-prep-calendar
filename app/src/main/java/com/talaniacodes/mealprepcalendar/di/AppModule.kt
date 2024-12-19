@@ -1,16 +1,20 @@
 package com.talaniacodes.mealprepcalendar.di
 
+import android.app.Application
+import androidx.room.Room
 import com.talaniacodes.mealprepcalendar.common.Constants.BASE_URL
+import com.talaniacodes.mealprepcalendar.data.local.SpendingsDatabase
+import com.talaniacodes.mealprepcalendar.data.local.SpendingsDatabase.Companion.DATABASE_NAME
+import com.talaniacodes.mealprepcalendar.data.mapper.SpendingMapper
 import com.talaniacodes.mealprepcalendar.data.remote.SpendingsApi
 import com.talaniacodes.mealprepcalendar.data.repository.SpendingRepositoryImpl
 import com.talaniacodes.mealprepcalendar.domain.repository.SpendingRepository
+import com.talaniacodes.mealprepcalendar.domain.use_case.get_spendings.GetSpendingsUseCase
+import com.talaniacodes.mealprepcalendar.domain.use_case.get_spendings.GetSpendingsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -19,17 +23,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSpendingsApi(): SpendingsApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(SpendingsApi::class.java)
+    fun provideSpendingsDataBase(app: Application): SpendingsDatabase{
+        return Room.databaseBuilder(
+            app,
+            SpendingsDatabase::class.java,
+            DATABASE_NAME
+        ).build()
     }
 
     @Provides
     @Singleton
-    fun provideSpendingRepository(api: SpendingsApi) : SpendingRepository{
-        return SpendingRepositoryImpl(api)
+    fun provideSpendingRepository(db: SpendingsDatabase, mapper: SpendingMapper) : SpendingRepository{
+        return SpendingRepositoryImpl(db.dao, mapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSpendingsUseCase(repository: SpendingRepository): GetSpendingsUseCase {
+        return GetSpendingsUseCaseImpl(repository)
     }
 }

@@ -5,7 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface SpendingsApi {
-
     @GET("/v1/spendings")
     suspend fun getSpendings(): List<SpendingDto>
 

@@ -1,10 +1,9 @@
 package com.talaniacodes.mealprepcalendar.domain.repository
 
-import com.talaniacodes.mealprepcalendar.data.remote.dto.SpendingDto
+import com.talaniacodes.mealprepcalendar.domain.model.SpendingModel
+import kotlinx.coroutines.flow.Flow
 
 interface SpendingRepository {
 
-    suspend fun getSpendings() : List<SpendingDto>
-
-    suspend fun getSpendingByType(spendingType: String) : SpendingDto
+    fun getSpendings(query: String) : Flow<List<SpendingModel>>
 }
