@@ -1,27 +1,36 @@
 package com.talaniacodes.mealprepcalendar.presentation.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = ColorPrimary,
-    background = DarkGray,
-    onBackground = TextWhite,
-    onPrimary = DarkGray
-)
 
 private val LightColorPalette = lightColors(
-    primary = ColorPrimary,
-    background = Color.White,
-    onBackground = MediumGray,
-    onPrimary = DarkGray
+    primary = LightAccent,
+    background = LightBackground,
+    surface = LightSecondaryText,
+    onPrimary = LightPrimaryText,
+    onBackground = LightSecondaryText,
+    error = LightNegative
+)
+
+private val DarkColorPalette = darkColors(
+    primary = DarkAccent,
+    background = DarkBackground,
+    surface = DarkCardBackground,
+    onPrimary = DarkPrimaryText,
+    onBackground = DarkSecondaryText,
+    error = DarkNegative
 )
 
 @Composable
-fun MealPrepyAppTheme(darkTheme: Boolean = true, content: @Composable() () -> Unit) {
+fun MealPrepyAppTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit)
+{
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -35,3 +44,4 @@ fun MealPrepyAppTheme(darkTheme: Boolean = true, content: @Composable() () -> Un
         content = content
     )
 }
+
